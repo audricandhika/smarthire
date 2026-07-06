@@ -1,3 +1,481 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SMARTHIRE AI — DESIGN SYSTEM
+   Based on DESIGN.md (Apple design language)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ─── Design Tokens ──────────────────────────────────────────────────── */
+:root {
+  /* Colors */
+  --color-primary:          #0066cc;   /* Action Blue — single accent */
+  --color-primary-focus:    #0071e3;   /* Focus ring */
+  --color-primary-on-dark:  #2997ff;   /* Links on dark tiles */
+
+  --color-canvas:           #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl:    #fafafc;
+  --color-tile-1:           #272729;
+  --color-tile-2:           #2a2a2c;
+  --color-tile-3:           #252527;
+  --color-surface-black:    #000000;
+
+  --color-ink:              #1d1d1f;
+  --color-body:             #1d1d1f;
+  --color-body-on-dark:     #ffffff;
+  --color-body-muted:       #cccccc;
+  --color-ink-muted-80:     #333333;
+  --color-ink-muted-48:     #7a7a7a;
+
+  --color-divider-soft:     #f0f0f0;
+  --color-hairline:         #e0e0e0;
+
+  /* Typography */
+  --font-family:            'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing */
+  --space-xxs:   4px;
+  --space-xs:    8px;
+  --space-sm:    12px;
+  --space-md:    17px;
+  --space-lg:    24px;
+  --space-xl:    32px;
+  --space-xxl:   48px;
+  --space-section: 80px;
+
+  /* Border Radius */
+  --rounded-none: 0px;
+  --rounded-xs:   5px;
+  --rounded-sm:   8px;
+  --rounded-md:   11px;
+  --rounded-lg:   18px;
+  --rounded-pill: 9999px;
+
+  /* Shadows */
+  --shadow-product: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+}
+
+/* ─── Reset & Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body.sh-body {
+  font-family: var(--font-family);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Global Nav ─────────────────────────────────────────────────────── */
+.sh-global-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--color-surface-black);
+  height: 44px;
+}
+
+.sh-global-nav__inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sh-global-nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.sh-global-nav__brand {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-body-on-dark);
+  letter-spacing: -0.2px;
+}
+
+.sh-global-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  flex: 1;
+  justify-content: center;
+}
+
+.sh-global-nav__link {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.12px;
+  color: var(--color-body-on-dark);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: var(--rounded-pill);
+  transition: opacity 0.15s ease;
+}
+.sh-global-nav__link:hover { opacity: 0.7; }
+
+.sh-global-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.sh-global-nav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  margin-left: auto;
+}
+.sh-global-nav__hamburger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--color-body-on-dark);
+  transition: all 0.2s;
+}
+
+/* Mobile Drawer */
+.sh-global-nav__drawer {
+  display: none;
+  flex-direction: column;
+  background: var(--color-tile-1);
+  padding: 0 24px;                          /* no vertical padding when closed */
+  border-top: 1px solid rgba(255,255,255,0.08);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.2s ease;
+}
+.sh-global-nav__drawer.is-open {
+  max-height: 400px;
+  padding: 16px 24px 24px;                  /* restore vertical padding when open */
+}
+.sh-global-nav__drawer-link {
+  font-size: 17px;
+  color: var(--color-body-on-dark);
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sh-global-nav__drawer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────── */
+
+/* Primary — Action Blue pill */
+.sh-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-family: var(--font-family);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.374px;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--rounded-pill);
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.15s ease;
+  white-space: nowrap;
+}
+.sh-btn-primary:active { transform: scale(0.95); }
+.sh-btn-primary:focus-visible { outline: 2px solid var(--color-primary-focus); outline-offset: 2px; }
+.sh-btn-primary--block { width: 100%; }
+
+/* Small pill — for nav */
+.sh-btn-primary--sm {
+  font-size: 12px;
+  padding: 6px 14px;
+}
+
+/* Secondary ghost pill */
+.sh-btn-secondary-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.374px;
+  text-decoration: none;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--rounded-pill);
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  white-space: nowrap;
+}
+.sh-btn-secondary-pill:active { transform: scale(0.95); }
+.sh-btn-secondary-pill--block { width: 100%; }
+
+/* Secondary on dark tile */
+.sh-btn-secondary-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--color-primary-on-dark);
+  font-family: var(--font-family);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.374px;
+  text-decoration: none;
+  border: 1px solid var(--color-primary-on-dark);
+  border-radius: var(--rounded-pill);
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.sh-btn-secondary-dark:active { transform: scale(0.95); }
+
+/* Dark utility — nav dark actions */
+.sh-btn-dark-utility {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-ink);
+  color: var(--color-body-on-dark);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.224px;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--rounded-sm);
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+.sh-btn-dark-utility:active { transform: scale(0.95); }
+
+/* ─── Full-Bleed Tiles ───────────────────────────────────────────────── */
+.sh-tile {
+  width: 100%;
+  padding: var(--space-section) 24px;
+}
+.sh-tile--light   { background: var(--color-canvas); color: var(--color-ink); }
+.sh-tile--parchment { background: var(--color-canvas-parchment); color: var(--color-ink); }
+.sh-tile--dark    { background: var(--color-tile-1); color: var(--color-body-on-dark); }
+.sh-tile--dark-2  { background: var(--color-tile-2); color: var(--color-body-on-dark); }
+.sh-tile--black   { background: var(--color-surface-black); color: var(--color-body-on-dark); }
+
+.sh-tile__inner {
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
+}
+.sh-tile__inner--wide {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── Typography ─────────────────────────────────────────────────────── */
+.sh-hero-display {
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1.07;
+  letter-spacing: -0.28px;
+}
+.sh-display-lg {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.10;
+  letter-spacing: 0;
+}
+.sh-display-md {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+}
+.sh-lead {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: 0.196px;
+}
+.sh-lead-airy {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+.sh-tagline {
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.231px;
+}
+.sh-body-strong {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.24;
+  letter-spacing: -0.374px;
+}
+.sh-body-text {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+}
+.sh-caption {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: -0.224px;
+}
+.sh-caption-strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+}
+.sh-fine-print {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.12px;
+}
+
+/* Color helpers */
+.sh-text-primary        { color: var(--color-primary); }
+.sh-text-primary-dark   { color: var(--color-primary-on-dark); }
+.sh-text-muted          { color: var(--color-body-muted); }
+.sh-text-muted-48       { color: var(--color-ink-muted-48); }
+
+/* ─── Utility Cards ──────────────────────────────────────────────────── */
+.sh-card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--rounded-lg);
+  padding: var(--space-lg);
+}
+
+.sh-card-grid {
+  display: grid;
+  gap: 20px;
+}
+.sh-card-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.sh-card-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+/* ─── CTA Pair ───────────────────────────────────────────────────────── */
+.sh-cta-pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+/* ─── Section Spacer ─────────────────────────────────────────────────── */
+.sh-spacer-sm  { height: var(--space-sm); }
+.sh-spacer-lg  { height: var(--space-lg); }
+.sh-spacer-xxl { height: var(--space-xxl); }
+
+/* ─── Footer ─────────────────────────────────────────────────────────── */
+.sh-footer {
+  background: var(--color-canvas-parchment);
+  padding: 64px 24px 40px;
+}
+.sh-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.sh-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.sh-footer__col-heading {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  color: var(--color-ink-muted-80);
+  margin-bottom: 12px;
+}
+.sh-footer__link {
+  display: block;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 2.41;
+  color: var(--color-ink-muted-80);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.sh-footer__link:hover { color: var(--color-primary); }
+.sh-footer__legal {
+  border-top: 1px solid var(--color-hairline);
+  padding-top: 20px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-ink-muted-48);
+}
+
+/* ─── Page offset for fixed nav ─────────────────────────────────────── */
+main { padding-top: 44px; }
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 1068px) {
+  .sh-hero-display { font-size: 40px; }
+  .sh-card-grid--4 { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 833px) {
+  .sh-global-nav__links,
+  .sh-global-nav__actions { display: none; }
+  .sh-global-nav__hamburger { display: flex; }
+  .sh-global-nav__drawer { display: flex; }
+  .sh-card-grid--3,
+  .sh-card-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .sh-footer__grid { grid-template-columns: repeat(2, 1fr); }
+  .sh-hero-display { font-size: 34px; }
+  .sh-display-lg { font-size: 34px; }
+  .sh-lead { font-size: 21px; }
+  .sh-tile { padding: 48px 20px; }
+}
+
+@media (max-width: 640px) {
+  .sh-card-grid--3,
+  .sh-card-grid--4 { grid-template-columns: 1fr; }
+  .sh-footer__grid { grid-template-columns: 1fr 1fr; }
+  .sh-hero-display { font-size: 28px; }
+}
+
+@media (max-width: 419px) {
+  .sh-footer__grid { grid-template-columns: 1fr; }
+  .sh-cta-pair { flex-direction: column; align-items: stretch; }
+  .sh-cta-pair .sh-btn-primary,
+  .sh-cta-pair .sh-btn-secondary-pill { text-align: center; }
+}

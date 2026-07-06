@@ -5,16 +5,29 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/jobs', function () {
+    return view('jobs.index');
+})->name('jobs.index');
 
-Route::middleware('auth')->group(function () {
+// Auth
+require __DIR__.'/auth.php';
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-require __DIR__.'/auth.php';
+    // Applicant dashboard
+    Route::get('/applicant/dashboard', function () {
+        return view('applicant.dashboard');
+    })->name('applicant.dashboard');
+
+    // Recruiter dashboard 
+    Route::get('/recruiter/dashboard', function () {
+        return view('recruiter.dashboard');
+    })->name('recruiter.dashboard');
+
+});
