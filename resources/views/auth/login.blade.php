@@ -1,47 +1,84 @@
 <x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <x-slot name="title">Sign In — SmartHire AI</x-slot>
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <div class="sh-auth-card">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        {{-- Header --}}
+        <div class="sh-auth-header">
+            <a href="{{ route('home') }}" class="sh-auth-header__logo">
+                <svg width="28" height="28" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                    <rect width="22" height="22" rx="5" fill="#0066cc"/>
+                    <path d="M6 16L11 6L16 16M8.5 12.5H13.5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+                <span class="sh-auth-header__brand">SmartHire</span>
+            </a>
+            <h1 class="sh-auth-header__title">Welcome back</h1>
+            <p class="sh-auth-header__subtitle">Sign in to your SmartHire account.</p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        {{-- Session status --}}
+        @if (session('status'))
+            <div class="sh-alert sh-alert--success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+        <form method="POST" action="{{ route('login') }}" id="login-form">
+            @csrf
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            {{-- Email --}}
+            <div class="sh-form-group">
+                <label for="email" class="sh-form-label">Email Address</label>
+                <input id="email" type="email" name="email"
+                    class="sh-form-input {{ $errors->has('email') ? 'sh-form-input--error' : '' }}"
+                    value="{{ old('email') }}"
+                    placeholder="budi@example.com"
+                    required autofocus autocomplete="username">
+                @error('email')
+                    <span class="sh-form-error" role="alert">{{ $message }}</span>
+                @enderror
+            </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+            {{-- Password --}}
+            <div class="sh-form-group">
+                <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;">
+                    <label for="password" class="sh-form-label" style="margin-bottom:0;">Password</label>
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}" class="sh-caption sh-text-primary" style="text-decoration:none; font-weight:400;">
+                            Forgot password?
+                        </a>
+                    @endif
+                </div>
+                <input id="password" type="password" name="password"
+                    class="sh-form-input {{ $errors->has('password') ? 'sh-form-input--error' : '' }}"
+                    placeholder="Your password"
+                    required autocomplete="current-password">
+                @error('password')
+                    <span class="sh-form-error" role="alert">{{ $message }}</span>
+                @enderror
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            {{-- Remember Me --}}
+            <div class="sh-form-group">
+                <label class="sh-checkbox-label" for="remember_me">
+                    <input id="remember_me" type="checkbox" name="remember" class="sh-checkbox">
+                    Keep me signed in
+                </label>
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+            {{-- Submit --}}
+            <div class="sh-form-actions">
+                <button type="submit" class="sh-btn-auth-submit" id="login-submit">
+                    Sign In
+                </button>
+            </div>
+
+        </form>
+
+        {{-- Footer link --}}
+        <p class="sh-auth-footer-link">
+            Don't have an account? <a href="{{ route('register') }}">Create one free</a>
+        </p>
+
+    </div>
 </x-guest-layout>
