@@ -57,10 +57,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
         Auth::login($user);
-
-        // Redirect based on role
-        return $user->isRecruiter()
-            ? redirect()->route('recruiter.dashboard')
-            : redirect()->route('applicant.dashboard');
+        
+        return redirect()->route('verification.notice');
     }
 }

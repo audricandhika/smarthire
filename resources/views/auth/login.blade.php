@@ -16,12 +16,26 @@
             <p class="sh-auth-header__subtitle">Sign in to your SmartHire account.</p>
         </div>
 
-        {{-- Session status --}}
-        @if (session('status'))
+        {{-- Account activated success banner --}}
+        @if (session('status') === 'account-activated')
+            <div class="sh-alert sh-alert--activated" role="alert">
+                <div class="sh-alert-activated__icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="10" fill="#1a7f37"/>
+                        <path d="M6 10.5l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="sh-alert-activated__title">Account activated!</p>
+                    <p class="sh-alert-activated__sub">Your email has been verified. Sign in to continue.</p>
+                </div>
+            </div>
+        @elseif (session('status'))
             <div class="sh-alert sh-alert--success" role="alert">
                 {{ session('status') }}
             </div>
         @endif
+
 
         <form method="POST" action="{{ route('login') }}" id="login-form">
             @csrf
