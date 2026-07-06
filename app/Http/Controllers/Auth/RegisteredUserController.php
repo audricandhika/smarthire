@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApplicantProfile;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -15,12 +17,11 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
-        return view('auth.register');
+        $defaultRole = request()->query('role', 'applicant');
+
+        return view('auth.register', compact('defaultRole'));
     }
 
     /**
@@ -31,21 +32,35 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'name'     => ['required', 'string', 'max:255'],
+            'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role'     => ['required', 'in:applicant,recruiter'],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => $request->role,
         ]);
 
-        event(new Registered($user));
+        // Auto-create profile record based on role
+        if ($user->isApplicant()) {
+            ApplicantProfile::create(['user_id' => $user->id]);
+        } elseif ($user->isRecruiter()) {
+            Company::create([
+                'user_id' => $user->id,
+                'name'    => $user->name . "'s Company",
+            ]);
+        }
 
+        event(new Registered($user));
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect based on role
+        return $user->isRecruiter()
+            ? redirect()->route('recruiter.dashboard')
+            : redirect()->route('applicant.dashboard');
     }
 }
