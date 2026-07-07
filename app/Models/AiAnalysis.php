@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AiAnalysis extends Model
 {
+    protected $table = 'ai_analyses';
+
     protected $fillable = [
         'application_id',
         'match_score',

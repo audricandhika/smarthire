@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Education extends Model
 {
+    protected $table = 'educations';
+
+
     protected $fillable = [
         'applicant_profile_id',
         'institution',

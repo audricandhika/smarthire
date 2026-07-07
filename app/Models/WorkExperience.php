@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class WorkExperience extends Model
 {
+    protected $table = 'work_experiences';
+
     protected $fillable = [
         'applicant_profile_id',
         'company',
