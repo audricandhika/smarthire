@@ -17,10 +17,9 @@
 
 <div class="sh-dash-frame">
 
-    {{-- ═══ SIDEBAR ══════════════════════════════════════════════════════ --}}
+    {{-- SIDEBAR --}}
     <aside class="sh-sidebar" id="sidebar" aria-label="Sidebar navigation">
 
-        {{-- Brand --}}
         <div class="sh-sidebar__brand">
             <a href="{{ route('home') }}" class="sh-sidebar__logo">
                 <svg width="28" height="28" viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -107,7 +106,6 @@
         </div>
     </aside>
 
-    {{-- ═══ MOBILE TOPBAR ════════════════════════════════════════════════ --}}
     <div class="sh-dash-topbar" aria-hidden="true">
         <button class="sh-dash-topbar__hamburger" id="sidebar-toggle" aria-label="Open navigation">
             <span></span><span></span><span></span>
@@ -115,10 +113,8 @@
         <span class="sh-dash-topbar__title">SmartHire</span>
     </div>
 
-    {{-- Sidebar overlay for mobile --}}
     <div class="sh-sidebar-overlay" id="sidebar-overlay"></div>
 
-    {{-- ═══ MAIN CONTENT ══════════════════════════════════════════════════ --}}
     <main class="sh-dash-main" id="main-content">
         {{ $slot }}
     </main>

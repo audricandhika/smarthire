@@ -100,7 +100,6 @@
             @endforelse
         </div>
 
-        {{-- Right column --}}
         <div style="display: flex; flex-direction: column; gap: 20px;">
 
             {{-- Company card --}}
