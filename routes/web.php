@@ -1,33 +1,33 @@
 <?php
 
+use App\Http\Controllers\Applicant\DashboardController as ApplicantDashboard;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboard;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// ─── Public ──────────────────────────────────────────────────────────────
+Route::get('/', fn () => view('welcome'))->name('home');
+Route::get('/jobs', fn () => view('jobs.index'))->name('jobs.index');
 
-Route::get('/jobs', function () {
-    return view('jobs.index');
-})->name('jobs.index');
+// ─── Auth (Breeze) ────────────────────────────────────────────────────────
+require __DIR__ . '/auth.php';
 
-// Auth
-require __DIR__.'/auth.php';
-
+// ─── Authenticated ────────────────────────────────────────────────────────
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    // Breeze profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Applicant dashboard
-    Route::get('/applicant/dashboard', function () {
-        return view('applicant.dashboard');
-    })->name('applicant.dashboard');
+    // ── Applicant routes ──────────────────────────────────────────
+    Route::middleware('role:applicant')->prefix('applicant')->name('applicant.')->group(function () {
+        Route::get('/dashboard', [ApplicantDashboard::class, 'index'])->name('dashboard');
+    });
 
-    // Recruiter dashboard 
-    Route::get('/recruiter/dashboard', function () {
-        return view('recruiter.dashboard');
-    })->name('recruiter.dashboard');
+    // ── Recruiter routes ──────────────────────────────────────────
+    Route::middleware('role:recruiter')->prefix('recruiter')->name('recruiter.')->group(function () {
+        Route::get('/dashboard', [RecruiterDashboard::class, 'index'])->name('dashboard');
+    });
 
 });
