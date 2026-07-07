@@ -13,7 +13,7 @@
     {{-- Page header --}}
     <div class="sh-dash-header">
         <h1 class="sh-dash-header__greeting">
-            Hello, {{ explode(' ', $user->name)[0] }} 👋
+            Hello, {{ explode(' ', $user->name)[0] }}
         </h1>
         <p class="sh-dash-header__sub">
             {{ now()->format('l, d F Y') }} ·
