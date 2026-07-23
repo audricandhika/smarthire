@@ -3,9 +3,10 @@
 use App\Http\Controllers\Applicant\DashboardController as ApplicantDashboard;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Recruiter\DashboardController as RecruiterDashboard;
+use App\Http\Controllers\Recruiter\JobPostingController;
 use Illuminate\Support\Facades\Route;
 
-// public
+// Public
 Route::get('/', fn () => view('welcome'))->name('home');
 Route::get('/jobs', fn () => view('jobs.index'))->name('jobs.index');
 
@@ -26,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Recruiter
     Route::middleware('role:recruiter')->prefix('recruiter')->name('recruiter.')->group(function () {
         Route::get('/dashboard', [RecruiterDashboard::class, 'index'])->name('dashboard');
+        Route::resource('jobs', JobPostingController::class);
     });
 
 });

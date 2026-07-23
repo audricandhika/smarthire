@@ -95,7 +95,7 @@
                     </div>
                     <p class="sh-empty-state__title">No applications yet</p>
                     <p class="sh-empty-state__text">Post your first job to start receiving applications.</p>
-                    <a href="#" class="sh-btn-primary">Post a Job</a>
+                    <a href="{{ route('recruiter.jobs.create') }}" class="sh-btn-primary">Post a Job</a>
                 </div>
             @endforelse
         </div>
@@ -141,13 +141,13 @@
                     <h2 class="sh-panel__title">Quick Actions</h2>
                 </div>
                 <div class="sh-quick-actions">
-                    <a href="#" class="sh-quick-action">
+                    <a href="{{ route('recruiter.jobs.create') }}" class="sh-quick-action">
                         <span class="sh-quick-action__icon">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 3V2a2 2 0 0 1 6 0v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M8 8v3M6.5 9.5h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
                         </span>
                         Post a New Job
                     </a>
-                    <a href="#" class="sh-quick-action">
+                    <a href="{{ route('recruiter.jobs.index') }}" class="sh-quick-action">
                         <span class="sh-quick-action__icon">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12c0-2.76 2.24-5 5-5h2c2.76 0 5 2.24 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/></svg>
                         </span>
